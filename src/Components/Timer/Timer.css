@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Space+Mono&effect=outline');
+
+.timer{
+    height: 50%;
+    width: 50%;
+    font-family: Space Mono, sans-serif;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer span{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
