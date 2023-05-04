@@ -2,20 +2,24 @@ import './Timer.css';
 import {useState, useEffect} from 'react';
 import {getTimeRemainingUntilTimestampMS} from './Utils/TimerUtils';
 import dayjs from "dayjs";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faArrowUp} from '@fortawesome/free-solid-svg-icons';
+import {faArrowDown} from '@fortawesome/free-solid-svg-icons';
 
-let timestampMS = dayjs().add(25,"minutes");
+let timestampMS = dayjs().add(25, "minutes");
 
 const defaultTimeRemaining = {
-    seconds: '00',
-    minutes: '00',
+    seconds: 0,
+    minutes: 0,
 }
 
 let pausedTimeRemaining = {
-    seconds: '00',
-    minutes: '00',
+    seconds: 0,
+    minutes: 0,
 }
 
 let isPaused = false;
+let isStarted = false;
 
 function setPausedTimeRemaining(currSeconds, currMinutes) {
     pausedTimeRemaining.seconds = currSeconds;
@@ -31,7 +35,7 @@ const Timer = () => {
         isPaused = true;
         // console.log("hit pause: " + isPaused);
         setPausedTimeRemaining(timeRemaining.seconds, timeRemaining.minutes);
-    // console.log("You paused at (seconds, minutes): " + pausedTimeRemaining.seconds + pausedTimeRemaining.minutes);
+        // console.log("You paused at (seconds, minutes): " + pausedTimeRemaining.seconds + pausedTimeRemaining.minutes);
         timestampMS = dayjs().second(0).minute(0);
         // console.log(timestampMS);
     }
@@ -42,56 +46,103 @@ const Timer = () => {
         timestampMS = dayjs().add(pausedTimeRemaining.seconds, "seconds").add(pausedTimeRemaining.minutes, "minutes");
     }
 
-    useEffect(() => {
-        // if (!isPaused) {
-        const intervalId = setInterval(() => {
-            updateRemainingTime(timestampMS);
-        }, 1000);
-        return () => clearInterval(intervalId);
-        // } else {
-        //     console.log(isPaused);
-        //     return () => {};
-        // }
-    }, [timestampMS])
+    function reset() {
+        //make the paused time remaining 0
+        setPausedTimeRemaining(0, 25);
+        //reset the dayjs
+        timestampMS = dayjs().second(0).minute(0);
+        // make the dayjs 25 mins
+        timestampMS = dayjs().add(25, "minutes");
+    }
 
-    function updateRemainingTime(countdown) {
-            setTimeRemaining(getTimeRemainingUntilTimestampMS(countdown));
+    function incWorkLen() {
+        timestampMS = timestampMS.add(1,"minutes");
+    }
+
+    function start() {
+        reset();
+        isStarted = true;
     }
 
 
-    if(isPaused){
-        return(
-            <div className = "timers">
+    useEffect(() => {
+
+            const intervalId = setInterval(() => {
+                if (isStarted) {
+                    updateRemainingTime(timestampMS);
+                }
+            }, 1000);
+            return () => clearInterval(intervalId);
+
+    }, [timestampMS])
+
+    function updateRemainingTime(countdown) {
+        setTimeRemaining(getTimeRemainingUntilTimestampMS(countdown));
+    }
+
+
+    if (isPaused) {
+        return (
+            <div className="timers">
                 <div className="timer">
-                    <span>{ pausedTimeRemaining.minutes }</span>
+                    <span>{pausedTimeRemaining.minutes}</span>
                     <span>minutes</span>
                     <span>{pausedTimeRemaining.seconds}</span>
                     <span>seconds</span>
                 </div>
                 <div className="controls">
-                <span>
-                    <button onClick={() => unpause()}>
-                        UnPause
+                    <span>
+                    <button onClick={() => pause()}>
+                        Pause
+                    </button>
+                    <button onClick={() => reset()}>
+                        Reset
                     </button>
                 </span>
+                    <span>
+                        <span>Set Work Length Minutes:</span>
+                        <button onClick={() => incWorkLen()}>
+                            <FontAwesomeIcon icon={faArrowUp}/>
+                        </button>
+                        <button>
+                            <FontAwesomeIcon icon={faArrowDown}/>
+                        </button>
+                    </span>
                 </div>
             </div>
         );
     } else {
-        return(
-            <div className = "timers">
+        return (
+            <div className="timers">
                 <div className="timer">
-                    <span>{ timeRemaining.minutes }</span>
+                    <span>{timeRemaining.minutes}</span>
                     <span>minutes</span>
                     <span>{timeRemaining.seconds}</span>
                     <span>seconds</span>
                 </div>
                 <div className="controls">
-                <span>
+                    <span>
+                        <button onClick={() => start()}>
+                            Start
+                        </button>
+                    </span>
+                    <span>
                     <button onClick={() => pause()}>
                         Pause
                     </button>
+                    <button onClick={() => reset()}>
+                        Reset
+                    </button>
                 </span>
+                    <span>
+                        <span>Set Work Length Minutes:</span>
+                        <button onClick={() => incWorkLen()}>
+                            <FontAwesomeIcon icon={faArrowUp}/>
+                        </button>
+                        <button>
+                            <FontAwesomeIcon icon={faArrowDown}/>
+                        </button>
+                    </span>
                 </div>
             </div>
         );
