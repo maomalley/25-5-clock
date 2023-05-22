@@ -8,6 +8,8 @@ import {faArrowDown} from '@fortawesome/free-solid-svg-icons';
 
 let timestampMS = dayjs().add(25, "minutes");
 let workMins = 25;
+let breakMins = 5;
+let workOrBreak = "Work";
 
 const defaultTimeRemaining = {
     seconds: 0,
@@ -41,6 +43,7 @@ const Timer = () => {
         timestampMS = dayjs().second(0).minute(0);
         // console.log(timestampMS);
     }
+    //TODO: DEC WORK LEN
     function unpause() {
         isPaused = false;
         // console.log("going to unpause using " + dayjs().second(pausedTimeRemaining.seconds).minute(pausedTimeRemaining.minutes));
@@ -54,13 +57,49 @@ const Timer = () => {
         timestampMS = dayjs().second(0).minute(0);
         // make the dayjs 25 mins
         timestampMS = dayjs().add(25, "minutes");
+        workMins = 25;
+        breakMins = 5;
+        workOrBreak = "Work";
+    }
+
+    function moveToBreak() {
+        setPausedTimeRemaining(0, 5);
+        //reset the dayjs
+        timestampMS = dayjs().second(0).minute(0);
+        // make the dayjs -5 mins- the length of breakMins
+        timestampMS = dayjs().add(breakMins, "minutes");
+        workOrBreak = "Break";
+        console.log("moved to break");
+    }
+
+    function moveToWork() {
+        //make the paused time remaining 0
+        setPausedTimeRemaining(0, workMins);
+        //reset the dayjs
+        timestampMS = dayjs().second(0).minute(0);
+        // make the dayjs 25 mins
+        timestampMS = dayjs().add(workMins, "minutes");
+        workOrBreak = "Work";
     }
 
     function incWorkLen() {
         // setPausedTimeRemaining(timeRemaining.seconds, timeRemaining.minutes + 1);
-        pausedTimeRemaining.minutes++;
-        timestampMS = timestampMS.add(1,"minutes");
+        if (workOrBreak === "Work") {
+            pausedTimeRemaining.minutes++;
+            timestampMS = timestampMS.add(1, "minutes");
+        }
         workMins = workMins+1;
+    }
+
+    function decWorkLen() {
+        // setPausedTimeRemaining(timeRemaining.seconds, timeRemaining.minutes + 1);
+        if (workMins > 1) {
+            if (workOrBreak === "Work") {
+                pausedTimeRemaining.minutes--;
+                timestampMS = timestampMS.subtract(1, "minutes");
+            }
+            workMins = workMins - 1;
+        }
     }
 
     function start() {
@@ -80,14 +119,24 @@ const Timer = () => {
 
     }, [timestampMS])
 
+    let changeTime;
     function updateRemainingTime(countdown) {
-        setTimeRemaining(getTimeRemainingUntilTimestampMS(countdown));
+        changeTime = getTimeRemainingUntilTimestampMS(countdown);
+        setTimeRemaining(changeTime);
+
+        if (changeTime.seconds <= 0 && changeTime.minutes <= 0 && workOrBreak === "Work") {
+            console.log("break time");
+            moveToBreak();
+        } else if (changeTime.seconds <= 1 && changeTime.minutes <= 0 && workOrBreak === "Break") {
+            moveToWork();
+        }
     }
 
 
     if (isPaused) {
         return (
             <div className="timers">
+                <span> {workOrBreak} </span>
                 <div className="timer">
                     <span>{pausedTimeRemaining.minutes}</span>
                     <span>minutes</span>
@@ -109,6 +158,16 @@ const Timer = () => {
                             <FontAwesomeIcon icon={faArrowUp}/>
                         </button>
                         <span>{ workMins }</span>
+                        <button onClick={()=>decWorkLen()}>
+                            <FontAwesomeIcon icon={faArrowDown}/>
+                        </button>
+                    </span>
+                    <span>
+                        <span>Set Break Length Minutes:</span>
+                        <button>
+                            <FontAwesomeIcon icon={faArrowUp}/>
+                        </button>
+                        <span>{ breakMins }</span>
                         <button>
                             <FontAwesomeIcon icon={faArrowDown}/>
                         </button>
@@ -119,6 +178,7 @@ const Timer = () => {
     } else {
         return (
             <div className="timers">
+                <span> {workOrBreak} </span>
                 <div className="timer">
                     <span>{timeRemaining.minutes}</span>
                     <span>minutes</span>
@@ -145,6 +205,16 @@ const Timer = () => {
                             <FontAwesomeIcon icon={faArrowUp}/>
                         </button>
                         <span>{ workMins }</span>
+                        <button onClick={()=>decWorkLen()}>
+                            <FontAwesomeIcon icon={faArrowDown}/>
+                        </button>
+                    </span>
+                    <span>
+                        <span>Set Break Length Minutes:</span>
+                        <button>
+                            <FontAwesomeIcon icon={faArrowUp}/>
+                        </button>
+                        <span>{ breakMins }</span>
                         <button>
                             <FontAwesomeIcon icon={faArrowDown}/>
                         </button>
