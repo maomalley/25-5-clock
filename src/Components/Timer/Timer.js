@@ -6,6 +6,11 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowUp} from '@fortawesome/free-solid-svg-icons';
 import {faArrowDown} from '@fortawesome/free-solid-svg-icons';
 
+//TODO: add audio beeps
+//TODO: allow timer to fully reach 00 seconds
+//TODO: add caps to break and session lengths to 60 mins
+//TODO: page styling
+
 let timestampMS = dayjs().add(25, "minutes");
 let workMins = 25;
 let breakMins = 5;
@@ -69,7 +74,7 @@ const Timer = () => {
         // make the dayjs -5 mins- the length of breakMins
         timestampMS = dayjs().add(breakMins, "minutes");
         workOrBreak = "Break";
-        console.log("moved to break");
+        // console.log("moved to break");
     }
 
     function moveToWork() {
@@ -83,7 +88,6 @@ const Timer = () => {
     }
 
     function incWorkLen() {
-        // setPausedTimeRemaining(timeRemaining.seconds, timeRemaining.minutes + 1);
         if (workOrBreak === "Work") {
             pausedTimeRemaining.minutes++;
             timestampMS = timestampMS.add(1, "minutes");
@@ -99,6 +103,24 @@ const Timer = () => {
                 timestampMS = timestampMS.subtract(1, "minutes");
             }
             workMins = workMins - 1;
+        }
+    }
+
+    function incBreakLen() {
+        if (workOrBreak === "Break") {
+            pausedTimeRemaining.minutes++;
+            timestampMS = timestampMS.add(1, "minutes");
+        }
+        breakMins = breakMins+1;
+    }
+
+    function decBreakLen() {
+        if (breakMins > 1) {
+            if (workOrBreak === "Break") {
+                pausedTimeRemaining.minutes--;
+                timestampMS = timestampMS.subtract(1, "minutes");
+            }
+            breakMins = breakMins - 1;
         }
     }
 
@@ -124,10 +146,10 @@ const Timer = () => {
         changeTime = getTimeRemainingUntilTimestampMS(countdown);
         setTimeRemaining(changeTime);
 
-        if (changeTime.seconds <= 0 && changeTime.minutes <= 0 && workOrBreak === "Work") {
-            console.log("break time");
+        if (changeTime.seconds <= 0 && changeTime.minutes <= 0 && workOrBreak === "Work" && !isPaused) {
+            // console.log("break time");
             moveToBreak();
-        } else if (changeTime.seconds <= 1 && changeTime.minutes <= 0 && workOrBreak === "Break") {
+        } else if (changeTime.seconds <= 1 && changeTime.minutes <= 0 && workOrBreak === "Break" && !isPaused) {
             moveToWork();
         }
     }
@@ -164,11 +186,11 @@ const Timer = () => {
                     </span>
                     <span>
                         <span>Set Break Length Minutes:</span>
-                        <button>
+                        <button onClick={() => incBreakLen()}>
                             <FontAwesomeIcon icon={faArrowUp}/>
                         </button>
                         <span>{ breakMins }</span>
-                        <button>
+                        <button onClick={() => decBreakLen()}>
                             <FontAwesomeIcon icon={faArrowDown}/>
                         </button>
                     </span>
@@ -211,11 +233,11 @@ const Timer = () => {
                     </span>
                     <span>
                         <span>Set Break Length Minutes:</span>
-                        <button>
+                        <button onClick={() => incBreakLen()}>
                             <FontAwesomeIcon icon={faArrowUp}/>
                         </button>
                         <span>{ breakMins }</span>
-                        <button>
+                        <button onClick={() => decBreakLen()}>
                             <FontAwesomeIcon icon={faArrowDown}/>
                         </button>
                     </span>
