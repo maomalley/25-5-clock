@@ -7,6 +7,7 @@ import {faArrowUp} from '@fortawesome/free-solid-svg-icons';
 import {faArrowDown} from '@fortawesome/free-solid-svg-icons';
 
 let timestampMS = dayjs().add(25, "minutes");
+let workMins = 25;
 
 const defaultTimeRemaining = {
     seconds: 0,
@@ -31,6 +32,7 @@ function setPausedTimeRemaining(currSeconds, currMinutes) {
 const Timer = () => {
     const [timeRemaining, setTimeRemaining] = useState(defaultTimeRemaining);
 
+
     function pause() {
         isPaused = true;
         // console.log("hit pause: " + isPaused);
@@ -39,7 +41,6 @@ const Timer = () => {
         timestampMS = dayjs().second(0).minute(0);
         // console.log(timestampMS);
     }
-
     function unpause() {
         isPaused = false;
         // console.log("going to unpause using " + dayjs().second(pausedTimeRemaining.seconds).minute(pausedTimeRemaining.minutes));
@@ -56,7 +57,10 @@ const Timer = () => {
     }
 
     function incWorkLen() {
+        // setPausedTimeRemaining(timeRemaining.seconds, timeRemaining.minutes + 1);
+        pausedTimeRemaining.minutes++;
         timestampMS = timestampMS.add(1,"minutes");
+        workMins = workMins+1;
     }
 
     function start() {
@@ -92,8 +96,8 @@ const Timer = () => {
                 </div>
                 <div className="controls">
                     <span>
-                    <button onClick={() => pause()}>
-                        Pause
+                    <button onClick={() => unpause()}>
+                        UnPause
                     </button>
                     <button onClick={() => reset()}>
                         Reset
@@ -104,6 +108,7 @@ const Timer = () => {
                         <button onClick={() => incWorkLen()}>
                             <FontAwesomeIcon icon={faArrowUp}/>
                         </button>
+                        <span>{ workMins }</span>
                         <button>
                             <FontAwesomeIcon icon={faArrowDown}/>
                         </button>
@@ -139,6 +144,7 @@ const Timer = () => {
                         <button onClick={() => incWorkLen()}>
                             <FontAwesomeIcon icon={faArrowUp}/>
                         </button>
+                        <span>{ workMins }</span>
                         <button>
                             <FontAwesomeIcon icon={faArrowDown}/>
                         </button>
