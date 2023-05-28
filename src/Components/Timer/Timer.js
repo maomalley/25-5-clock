@@ -6,9 +6,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowUp} from '@fortawesome/free-solid-svg-icons';
 import {faArrowDown} from '@fortawesome/free-solid-svg-icons';
 
-//TODO: add audio beeps
-//TODO: allow timer to fully reach 00 seconds
-//TODO: add caps to break and session lengths to 60 mins
 //TODO: page styling
 
 let timestampMS = dayjs().add(25, "minutes");
@@ -48,7 +45,6 @@ const Timer = () => {
         timestampMS = dayjs().second(0).minute(0);
         // console.log(timestampMS);
     }
-    //TODO: DEC WORK LEN
     function unpause() {
         isPaused = false;
         // console.log("going to unpause using " + dayjs().second(pausedTimeRemaining.seconds).minute(pausedTimeRemaining.minutes));
@@ -68,6 +64,7 @@ const Timer = () => {
     }
 
     function moveToBreak() {
+        playAudio();
         setPausedTimeRemaining(0, 5);
         //reset the dayjs
         timestampMS = dayjs().second(0).minute(0);
@@ -78,6 +75,7 @@ const Timer = () => {
     }
 
     function moveToWork() {
+        playAudio();
         //make the paused time remaining 0
         setPausedTimeRemaining(0, workMins);
         //reset the dayjs
@@ -87,12 +85,25 @@ const Timer = () => {
         workOrBreak = "Work";
     }
 
+    function playAudio() {
+        var audio = document.getElementById("audio-element");
+        audio.play();
+        // var audio = document.getElementsByTagName('audio')[0];
+        //
+        // var source = document.createElement('source');console.log(source);
+        // source.setAttribute('src','src/Components/Sound007.wav');
+        //
+        // audio.appendChild(source);
+    }
+
     function incWorkLen() {
-        if (workOrBreak === "Work") {
-            pausedTimeRemaining.minutes++;
-            timestampMS = timestampMS.add(1, "minutes");
+        if (workMins < 60) {
+            if (workOrBreak === "Work") {
+                pausedTimeRemaining.minutes++;
+                timestampMS = timestampMS.add(1, "minutes");
+            }
+            workMins = workMins + 1;
         }
-        workMins = workMins+1;
     }
 
     function decWorkLen() {
@@ -107,11 +118,13 @@ const Timer = () => {
     }
 
     function incBreakLen() {
-        if (workOrBreak === "Break") {
-            pausedTimeRemaining.minutes++;
-            timestampMS = timestampMS.add(1, "minutes");
+        if (breakMins < 60) {
+            if (workOrBreak === "Break") {
+                pausedTimeRemaining.minutes++;
+                timestampMS = timestampMS.add(1, "minutes");
+            }
+            breakMins = breakMins + 1;
         }
-        breakMins = breakMins+1;
     }
 
     function decBreakLen() {
@@ -149,7 +162,7 @@ const Timer = () => {
         if (changeTime.seconds <= 0 && changeTime.minutes <= 0 && workOrBreak === "Work" && !isPaused) {
             // console.log("break time");
             moveToBreak();
-        } else if (changeTime.seconds <= 1 && changeTime.minutes <= 0 && workOrBreak === "Break" && !isPaused) {
+        } else if (changeTime.seconds <= 0 && changeTime.minutes <= 0 && workOrBreak === "Break" && !isPaused) {
             moveToWork();
         }
     }
@@ -164,6 +177,8 @@ const Timer = () => {
                     <span>minutes</span>
                     <span>{pausedTimeRemaining.seconds}</span>
                     <span>seconds</span>
+                    <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3" className="audio-element" id="audio-element">
+                    </audio>
                 </div>
                 <div className="controls">
                     <span>
@@ -206,6 +221,8 @@ const Timer = () => {
                     <span>minutes</span>
                     <span>{timeRemaining.seconds}</span>
                     <span>seconds</span>
+                    <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3" className="audio-element" id="audio-element">
+                    </audio>
                 </div>
                 <div className="controls">
                     <span>
