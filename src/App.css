@@ -6,4 +6,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: linear-gradient(#a2a2e7, #515177);
 }

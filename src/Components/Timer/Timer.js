@@ -5,8 +5,7 @@ import dayjs from "dayjs";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowUp} from '@fortawesome/free-solid-svg-icons';
 import {faArrowDown} from '@fortawesome/free-solid-svg-icons';
-
-//TODO: page styling
+import Button from 'react-bootstrap/Button';
 
 let timestampMS = dayjs().add(25, "minutes");
 let workMins = 25;
@@ -171,43 +170,43 @@ const Timer = () => {
     if (isPaused) {
         return (
             <div className="timers">
-                <span> {workOrBreak} </span>
+                <span id = "work-or-break"> {workOrBreak} </span>
                 <div className="timer">
-                    <span>{pausedTimeRemaining.minutes}</span>
-                    <span>minutes</span>
-                    <span>{pausedTimeRemaining.seconds}</span>
-                    <span>seconds</span>
+                    <span id = "mins">{pausedTimeRemaining.minutes}</span>
+                    <span id = "mins-label">minutes</span>
+                    <span id = "secs">{pausedTimeRemaining.seconds}</span>
+                    <span id = "secs-label">seconds</span>
                     <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3" className="audio-element" id="audio-element">
                     </audio>
                 </div>
                 <div className="controls">
                     <span>
-                    <button onClick={() => unpause()}>
+                    <Button variant="primary" onClick={() => unpause()}>
                         UnPause
-                    </button>
-                    <button onClick={() => reset()}>
+                    </Button>
+                    <Button variant="primary" onClick={() => reset()}>
                         Reset
-                    </button>
+                    </Button>
                 </span>
                     <span>
                         <span>Set Work Length Minutes:</span>
-                        <button onClick={() => incWorkLen()}>
+                        <Button variant="primary" onClick={() => incWorkLen()}>
                             <FontAwesomeIcon icon={faArrowUp}/>
-                        </button>
+                        </Button>
                         <span>{ workMins }</span>
-                        <button onClick={()=>decWorkLen()}>
+                        <Button variant="primary" onClick={()=>decWorkLen()}>
                             <FontAwesomeIcon icon={faArrowDown}/>
-                        </button>
+                        </Button>
                     </span>
                     <span>
                         <span>Set Break Length Minutes:</span>
-                        <button onClick={() => incBreakLen()}>
+                        <Button variant="primary" onClick={() => incBreakLen()}>
                             <FontAwesomeIcon icon={faArrowUp}/>
-                        </button>
+                        </Button>
                         <span>{ breakMins }</span>
-                        <button onClick={() => decBreakLen()}>
+                        <Button variant="primary" onClick={() => decBreakLen()}>
                             <FontAwesomeIcon icon={faArrowDown}/>
-                        </button>
+                        </Button>
                     </span>
                 </div>
             </div>
@@ -215,48 +214,46 @@ const Timer = () => {
     } else {
         return (
             <div className="timers">
-                <span> {workOrBreak} </span>
+                <span id = "work-or-break"> {workOrBreak} </span>
                 <div className="timer">
-                    <span>{timeRemaining.minutes}</span>
-                    <span>minutes</span>
-                    <span>{timeRemaining.seconds}</span>
-                    <span>seconds</span>
+                    <span id = "mins">{pausedTimeRemaining.minutes}</span>
+                    <span id = "mins-label">minutes</span>
+                    <span id = "secs">{pausedTimeRemaining.seconds}</span>
+                    <span id = "secs-label">seconds</span>
                     <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3" className="audio-element" id="audio-element">
                     </audio>
                 </div>
                 <div className="controls">
-                    <span>
-                        <button onClick={() => start()}>
+                    <div className="buttons">
+                        <Button variant="primary" onClick={() => start()}>
                             Start
-                        </button>
-                    </span>
-                    <span>
-                    <button onClick={() => pause()}>
+                        </Button>
+                    <Button variant="primary" onClick={() => pause()}>
                         Pause
-                    </button>
-                    <button onClick={() => reset()}>
+                    </Button>
+                    <Button variant="primary" onClick={() => reset()}>
                         Reset
-                    </button>
-                </span>
+                    </Button>
+                </div>
                     <span>
                         <span>Set Work Length Minutes:</span>
-                        <button onClick={() => incWorkLen()}>
+                        <Button variant="primary" onClick={() => incWorkLen()}>
                             <FontAwesomeIcon icon={faArrowUp}/>
-                        </button>
+                        </Button>
                         <span>{ workMins }</span>
-                        <button onClick={()=>decWorkLen()}>
+                        <Button variant="primary" onClick={()=>decWorkLen()}>
                             <FontAwesomeIcon icon={faArrowDown}/>
-                        </button>
+                        </Button>
                     </span>
                     <span>
                         <span>Set Break Length Minutes:</span>
-                        <button onClick={() => incBreakLen()}>
+                        <Button variant="primary" onClick={() => incBreakLen()}>
                             <FontAwesomeIcon icon={faArrowUp}/>
-                        </button>
+                        </Button>
                         <span>{ breakMins }</span>
-                        <button onClick={() => decBreakLen()}>
+                        <Button variant="primary" onClick={() => decBreakLen()}>
                             <FontAwesomeIcon icon={faArrowDown}/>
-                        </button>
+                        </Button>
                     </span>
                 </div>
             </div>

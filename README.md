@@ -1,4 +1,9 @@
-# Getting Started with Create React App
+# 25-5 Timer
+
+This project is a 25-5 timer which can be used for work efficiency.
+This project uses React and Bootstrap.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
