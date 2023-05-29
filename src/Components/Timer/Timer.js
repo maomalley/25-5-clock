@@ -5,7 +5,9 @@ import dayjs from "dayjs";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowUp} from '@fortawesome/free-solid-svg-icons';
 import {faArrowDown} from '@fortawesome/free-solid-svg-icons';
-import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+//TODO: page styling
 
 let timestampMS = dayjs().add(25, "minutes");
 let workMins = 25;
@@ -144,12 +146,12 @@ const Timer = () => {
 
     useEffect(() => {
 
-            const intervalId = setInterval(() => {
-                if (isStarted) {
-                    updateRemainingTime(timestampMS);
-                }
-            }, 1000);
-            return () => clearInterval(intervalId);
+        const intervalId = setInterval(() => {
+            if (isStarted) {
+                updateRemainingTime(timestampMS);
+            }
+        }, 1000);
+        return () => clearInterval(intervalId);
 
     }, [timestampMS])
 
@@ -170,43 +172,43 @@ const Timer = () => {
     if (isPaused) {
         return (
             <div className="timers">
-                <span id = "work-or-break"> {workOrBreak} </span>
+                <span id="work-or-break"> {workOrBreak} </span>
                 <div className="timer">
-                    <span id = "mins">{pausedTimeRemaining.minutes}</span>
-                    <span id = "mins-label">minutes</span>
-                    <span id = "secs">{pausedTimeRemaining.seconds}</span>
-                    <span id = "secs-label">seconds</span>
+                    <span>{pausedTimeRemaining.minutes}</span>
+                    <span>minutes</span>
+                    <span>{pausedTimeRemaining.seconds}</span>
+                    <span>seconds</span>
                     <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3" className="audio-element" id="audio-element">
                     </audio>
                 </div>
                 <div className="controls">
-                    <span>
-                    <Button variant="primary" onClick={() => unpause()}>
+                    <span id="timer-buttons">
+                    <button onClick={() => unpause()} className="btn btn-outline-light">
                         UnPause
-                    </Button>
-                    <Button variant="primary" onClick={() => reset()}>
+                    </button>
+                    <button onClick={() => reset()} className="btn btn-outline-light">
                         Reset
-                    </Button>
+                    </button>
                 </span>
-                    <span>
+                    <span id="work-controls">
                         <span>Set Work Length Minutes:</span>
-                        <Button variant="primary" onClick={() => incWorkLen()}>
+                        <button onClick={() => incWorkLen()} className="btn btn-outline-light">
                             <FontAwesomeIcon icon={faArrowUp}/>
-                        </Button>
+                        </button>
                         <span>{ workMins }</span>
-                        <Button variant="primary" onClick={()=>decWorkLen()}>
+                        <button onClick={()=>decWorkLen()} className="btn btn-outline-light">
                             <FontAwesomeIcon icon={faArrowDown}/>
-                        </Button>
+                        </button>
                     </span>
-                    <span>
+                    <span id="break-controls">
                         <span>Set Break Length Minutes:</span>
-                        <Button variant="primary" onClick={() => incBreakLen()}>
+                        <button onClick={() => incBreakLen()} className="btn btn-outline-light">
                             <FontAwesomeIcon icon={faArrowUp}/>
-                        </Button>
+                        </button>
                         <span>{ breakMins }</span>
-                        <Button variant="primary" onClick={() => decBreakLen()}>
+                        <button onClick={() => decBreakLen()} className="btn btn-outline-light">
                             <FontAwesomeIcon icon={faArrowDown}/>
-                        </Button>
+                        </button>
                     </span>
                 </div>
             </div>
@@ -214,46 +216,46 @@ const Timer = () => {
     } else {
         return (
             <div className="timers">
-                <span id = "work-or-break"> {workOrBreak} </span>
+                <span id="work-or-break"> {workOrBreak} </span>
                 <div className="timer">
-                    <span id = "mins">{pausedTimeRemaining.minutes}</span>
-                    <span id = "mins-label">minutes</span>
-                    <span id = "secs">{pausedTimeRemaining.seconds}</span>
-                    <span id = "secs-label">seconds</span>
+                    <span>{timeRemaining.minutes}</span>
+                    <span>minutes</span>
+                    <span>{timeRemaining.seconds}</span>
+                    <span>seconds</span>
                     <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3" className="audio-element" id="audio-element">
                     </audio>
                 </div>
                 <div className="controls">
-                    <div className="buttons">
-                        <Button variant="primary" onClick={() => start()}>
+                    <span id="timer-buttons">
+                        <button onClick={() => start()} className="btn btn-outline-light">
                             Start
-                        </Button>
-                    <Button variant="primary" onClick={() => pause()}>
+                        </button>
+                    <button onClick={() => pause()} className="btn btn-outline-light">
                         Pause
-                    </Button>
-                    <Button variant="primary" onClick={() => reset()}>
+                    </button>
+                    <button onClick={() => reset()} className="btn btn-outline-light">
                         Reset
-                    </Button>
-                </div>
-                    <span>
+                    </button>
+                </span>
+                    <span id="work-controls">
                         <span>Set Work Length Minutes:</span>
-                        <Button variant="primary" onClick={() => incWorkLen()}>
+                        <button onClick={() => incWorkLen()} className="btn btn-outline-light">
                             <FontAwesomeIcon icon={faArrowUp}/>
-                        </Button>
+                        </button>
                         <span>{ workMins }</span>
-                        <Button variant="primary" onClick={()=>decWorkLen()}>
+                        <button onClick={()=>decWorkLen()} className="btn btn-outline-light">
                             <FontAwesomeIcon icon={faArrowDown}/>
-                        </Button>
+                        </button>
                     </span>
-                    <span>
+                    <span id="break-controls">
                         <span>Set Break Length Minutes:</span>
-                        <Button variant="primary" onClick={() => incBreakLen()}>
+                        <button onClick={() => incBreakLen()} className="btn btn-outline-light">
                             <FontAwesomeIcon icon={faArrowUp}/>
-                        </Button>
+                        </button>
                         <span>{ breakMins }</span>
-                        <Button variant="primary" onClick={() => decBreakLen()}>
+                        <button onClick={() => decBreakLen()} className="btn btn-outline-light">
                             <FontAwesomeIcon icon={faArrowDown}/>
-                        </Button>
+                        </button>
                     </span>
                 </div>
             </div>

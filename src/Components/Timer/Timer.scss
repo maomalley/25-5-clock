@@ -1,6 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Space+Mono&effect=outline");
-@import url("https://fonts.googleapis.com/css?family=Kanit&effect=outline");
-.timer {
+@import url('https://fonts.googleapis.com/css?family=Space+Mono&effect=outline');
+@import url('https://fonts.googleapis.com/css?family=Kanit&effect=outline');
+
+.timer{
   height: 50%;
   width: 50%;
   font-family: Space Mono, sans-serif;
@@ -11,7 +12,7 @@
   color: white;
 }
 
-#work-or-break {
+#work-or-break{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +22,8 @@
   font-size: 2rem;
 }
 
-.buttons {
+.buttons{
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +35,7 @@
   width: 100%;
 }
 
-.timers {
+.timers{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,7 +43,7 @@
   width: 50vw;
 }
 
-#timer-buttons {
+#timer-buttons{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,7 +56,7 @@
   margin-right: 0.5rem;
 }
 
-.controls {
+.controls{
   font-family: Space Mono, sans-serif;
   color: white;
   display: flex;
@@ -62,5 +64,3 @@
   justify-content: center;
   flex-direction: column;
 }
-
-/*# sourceMappingURL=Timer.css.map */
